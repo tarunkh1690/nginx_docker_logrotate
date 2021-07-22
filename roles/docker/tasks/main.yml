@@ -1,0 +1,30 @@
+---
+# tasks file for docker
+- name: Install yum utils    ## This task will make sure yum-utills package is installed in machine
+  yum:
+    name: yum-utils
+    state: latest
+  
+- name: Add Docker repo    ## This task will download docker-ce.repo in yum repo folder in etc.
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docer-ce.repo
+
+- name: Install Docker ## This task will make sure all mentioned packages in with_items list are installed in machine
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - docker-ce
+    - python3
+    - python3-pip
+
+- name: install docker-py ## This task will make sure docker-py package is installed in machine via pip 
+  pip: 
+    name: docker-py
+
+- name: Start Docker service ## This task will make sure docker service is running and enabled at run time 
+  service:
+    name: docker
+    state: started
+    enabled: yes

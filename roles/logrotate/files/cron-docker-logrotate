@@ -1,0 +1,1 @@
+/usr/sbin/logrotate -vf /etc/logrotate.d/docker-logrotate

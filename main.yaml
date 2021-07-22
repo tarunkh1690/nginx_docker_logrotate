@@ -1,0 +1,7 @@
+---
+- hosts: all     ## this playbook will execute for all hostgroup mentioned in inverntory file
+  become: true   ## all the task will execute with root privilages if required.
+  roles:         ## all following mentioned roles will execute by the playbook
+    - docker
+    - nginx
+    - logrotate

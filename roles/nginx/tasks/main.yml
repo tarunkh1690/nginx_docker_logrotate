@@ -1,0 +1,29 @@
+---
+# tasks file for nginx
+- name: Copy docker file  ## this task will copy nginx.conf anf Docker file to remote server with the help of copy anf loop module
+  copy:
+    src: 'files/{{ item }}'
+    dest: '~/{{ item }}'
+  loop:
+    - nginx.conf
+    - Dockerfile
+
+
+- name: Build an image with name mynginx  ## this task will create/build nginx image locally using docker_image module 
+  docker_image:
+    name: mynginx
+    build:
+      pull: yes
+      path: "~/"
+    state: present
+    source: build
+
+- name: Create nginx container  ## this task will create the container with unless-stopped restart_policy and exposed port maintioned in variable file  
+  docker_container:
+    name: mynginx
+    image: mynginx
+    state: started
+    recreate: yes
+    restart_policy: unless-stopped
+    ports:
+    - "{{ nginx_port }}"

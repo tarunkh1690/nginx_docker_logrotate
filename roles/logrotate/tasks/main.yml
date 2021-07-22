@@ -1,0 +1,19 @@
+---
+# tasks file for logrotate
+
+- name: Install logrotate ## this task will make sure logrotate packeg is installed
+  package:
+    name: logrotate
+    state: latest
+
+- name: Copy docker logrotate config  file  ## Copy task will copy logrotate comfiguration file at remote server in logrotate.d folder
+  copy:
+    src: 'files/docker-logrotate'
+    dest: '/etc/logrotate.d/docker-logrotate'
+
+- name: Set Cron for logrotate     ## this task will copy shell script to execute logrotates command hourly in cron.hourly folder at remote server 
+  copy:
+    src: 'files/cron-docker-logrotate'
+    dest: '/etc/cron.hourly/cron-docker-logrotate'
+    mode: '0755'
+
